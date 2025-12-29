@@ -5,18 +5,23 @@ const tryEle = document.querySelector('.try-again');
 const errorEle = document.querySelector('.error-text');
 
 async function fetchAPI() {
-  // RESET UI 
+  // Reset error UI
   errorEle.classList.add('hide');
   tryEle.classList.add('hide');
   setupEle.classList.remove('red');
 
-  //LOADING STATE
+  // Loading state
   buttonEle.textContent = 'Fetching...';
   buttonEle.disabled = true;
   punchlineEle.classList.add('hide');
 
   try {
     const response = await fetch('https://official-joke-api.appspot.com/random_joke');
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch joke');
+    }
+
     const res = await response.json();
 
     setupEle.textContent = res.setup;
@@ -32,6 +37,7 @@ async function fetchAPI() {
     buttonEle.textContent = 'Fetch joke';
   }
 }
+
 
 buttonEle.addEventListener('click', fetchAPI);
 tryEle.addEventListener('click', fetchAPI);
